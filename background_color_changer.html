@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Random Color Changer</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            transition: background-color 0.5s ease;
+            padding: 50px;
+        }
+        
+        #colorButton {
+            padding: 12px 24px;
+            font-size: 18px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        #colorButton:hover {
+            background-color: #45a049;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        #colorButton:active {
+            transform: translateY(0);
+        }
+        
+        #colorCode {
+            margin-top: 20px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <h1>Random Background Color Changer</h1>
+    <p>Click the button to change the background color!</p>
+    
+    <button id="colorButton">Change Color</button>
+    <div id="colorCode">Current color: #FFFFFF</div>
+    
+    <script>
+        // Get DOM elements
+        const colorButton = document.getElementById('colorButton');
+        const colorCode = document.getElementById('colorCode');
+        
+        // Function to generate random hex color
+        function getRandomColor() {
+            // Generate random values for red, green, and blue (0-255)
+            const letters = '0123456789ABCDEF';
+            let color = '#';
+            for (let i = 0; i < 6; i++) {
+                color += letters[Math.floor(Math.random() * 16)];
+            }
+            return color;
+        }
+        
+        // Function to calculate text color based on background brightness
+        function getTextColor(bgColor) {
+            // Convert hex to RGB
+            const r = parseInt(bgColor.substr(1, 2), 16);
+            const g = parseInt(bgColor.substr(3, 2), 16);
+            const b = parseInt(bgColor.substr(5, 2), 16);
+            
+            // Calculate brightness (perceived luminance)
+            const brightness = (r * 299 + g * 587 + b * 114) / 1000;
+            
+            // Return black or white depending on brightness
+            return brightness > 128 ? '#000000' : '#FFFFFF';
+        }
+        
+        // Event listener for button click
+        colorButton.addEventListener('click', function() {
+            const randomColor = getRandomColor();
+            
+            // Change background color
+            document.body.style.backgroundColor = randomColor;
+            
+            // Update color code display
+            colorCode.textContent = `Current color: ${randomColor}`;
+            colorCode.style.color = getTextColor(randomColor);
+            
+            // Also change button text color for better contrast
+            colorButton.style.color = getTextColor('#45a049'); // Using the button's hover color
+        });
+    </script>
+</body>
+</html>
